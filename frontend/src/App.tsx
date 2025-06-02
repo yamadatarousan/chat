@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import { ChatWindow } from './components/Chat/ChatWindow';
+import { RootState } from './store';
 
-function App() {
+const AppRoutes: React.FC = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          <Route
+            path="/login"
+            element={isAuthenticated ? <Navigate to="/chat" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={isAuthenticated ? <Navigate to="/chat" /> : <Register />}
+          />
+          <Route
+            path="/chat"
+            element={isAuthenticated ? <ChatWindow /> : <Navigate to="/login" />}
+          />
+          <Route path="/" element={<Navigate to="/chat" />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
+
+const App: React.FC = () => {
+  return (
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
+  );
+};
 
 export default App;

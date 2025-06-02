@@ -87,11 +87,13 @@
    mkdir -p backend/cmd/app
    cd backend
    go mod init chatapp
+   go mod tidy  # 依存関係の整理
    go get -u github.com/gin-gonic/gin
    go get -u gorm.io/gorm
    go get -u gorm.io/driver/mysql
    go get -u github.com/golang-jwt/jwt/v5
    go get -u github.com/gorilla/websocket
+   go mod tidy  # 新しく追加した依存関係の整理
    ```
 
 3. MySQL設定
