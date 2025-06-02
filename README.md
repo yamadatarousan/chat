@@ -65,10 +65,21 @@
 
 1. フロントエンド初期設定
    ```bash
+   # Reactアプリケーションの作成
    npx create-react-app frontend --template typescript
    cd frontend
+   
+   # 必要なパッケージのインストール
    npm install tailwindcss postcss autoprefixer zustand socket.io-client
-   npx tailwindcss init -p
+   
+   # Tailwind CSSの設定
+   # tailwind.config.jsとpostcss.config.jsは自動生成されるため、
+   # 手動で設定ファイルを作成する必要はありません
+   
+   # src/index.cssに以下を追加
+   # @import 'tailwindcss/base';
+   # @import 'tailwindcss/components';
+   # @import 'tailwindcss/utilities';
    ```
 
 2. バックエンド初期設定
