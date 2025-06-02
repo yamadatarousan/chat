@@ -1,0 +1,68 @@
+# チャットアプリケーション開発ルール
+
+## 🚨 AI エージェント必須チェック - 必ず守ること
+
+### ファイル作成前に必須:
+1. `list_dir` で現在の構造をチェック
+2. `codebase_search` で類似機能が存在しないか確認  
+3. 重複がないことを検証
+
+### アーキテクチャルール
+- **バックエンドエントリーポイント**: `backend/cmd/app/main.go` のみ (複数のmain.goは禁止)
+- **フロントエンド状態管理**: Redux Toolkit のみ (認証にContext APIは使用禁止)
+- **チャットコンポーネント**: `ChatWindow.tsx` 単一 (複数のチャットコンポーネント禁止)
+
+### 技術スタック統一 (混在禁止)
+**バックエンド:**
+- フレームワーク: Gin のみ
+- ORM: GORM のみ  
+- 認証: JWT のみ
+- データベース: MySQL のみ
+
+**フロントエンド:**
+- 状態管理: Redux Toolkit のみ (認証にContext API禁止)
+- UI: Material-UI のみ
+- HTTP: Axios のみ
+- WebSocket: Socket.io-client のみ
+
+### ディレクトリ構造
+```
+backend/
+├── cmd/app/main.go          ← エントリーポイントはここのみ
+├── internal/
+│   ├── handlers/           
+│   ├── services/           
+│   ├── repositories/       
+│   ├── models/            
+│   ├── middleware/        
+│   └── config/            
+└── pkg/database/          
+
+frontend/src/
+├── components/            
+├── store/                ← Redux のみ
+├── services/             
+├── types/                
+└── contexts/             ← 使用禁止 (Redux使用)
+```
+
+### 🚫 禁止パターン
+1. 複数の main.go ファイル
+2. 認証で Context API + Redux の併用 (Redux選択)
+3. 複数のチャット実装  
+4. 設定ファイルの全書き換え
+5. 既存構造を確認せずにファイル作成
+
+### 品質ルール
+- 未使用のimportは即座に削除
+- 適切なエラーハンドリングを実装
+- TypeScript strict mode を維持
+- 適切なHTTPステータスコードを使用
+
+### 大きな変更を提案する前に:
+1. 類似機能が既に存在しないか確認
+2. 確立されたパターンとの整合性を検証
+3. プロジェクト構造への影響を考慮
+4. 「すべてを書き換える」アプローチを避ける
+
+**覚えておくこと: 人間の開発者は一貫性を期待し、明らかな重複に気づくもの。作成前に必ず確認すること。** 
